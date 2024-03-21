@@ -10,7 +10,7 @@ clean_googletest: build_googletest
 
 CC = g++
 
-CFLAGS = -std=c++14 -Wall -Wextra -lgtest -lgtest_main -pthread
+CFLAGS = -std=c++14 -Wall -Wextra -pthread -lstdc++
 
 ifeq ($(DEBUG),1)
 	CFLAGS += -g
@@ -23,7 +23,10 @@ INCLUDES = \
 
 CFLAGS += -I $(abspath include)
 
+LDFLAGS=-lgtest -lgmock -lgmock_main -lgtest_main
+
 SOURCES = \
+	Stack.cpp \
 	StackTests.cpp
 OBJECTS = $(SOURCES:%.cpp=build/%.o)
 TEST = build/longNumberTest
@@ -32,7 +35,7 @@ EXECPI = build/CalculatePi
 default: $(EXECUTABLE)
 
 $(TEST): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LDFLAGS)
 
 
 build/%.o: src/%.cpp $(INCLUDES)
